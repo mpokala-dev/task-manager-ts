@@ -1,4 +1,3 @@
-# React + TypeScript + Vite
 # Task Manager — TypeScript + React
 
 A production-quality task management app built with modern TypeScript and React 19.
