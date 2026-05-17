@@ -28,3 +28,9 @@ A production-quality task management app built with modern TypeScript and React 
 ## Run locally
 npm install
 npm run dev
+
+## Tests
+- 17+ tests with Vitest + React Testing Library
+- 91% statement coverage across hooks, components and types
+- Run tests: `npm test`
+- Run coverage: `npm run coverage`
