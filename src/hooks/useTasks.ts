@@ -9,6 +9,7 @@ const loadTasks = (): Task[] => {
     return JSON.parse(saved).map((t: Task) => ({
       ...t,
       createdAt: new Date(t.createdAt),
+      dueDate: t.dueDate ? new Date(t.dueDate) : undefined,
     }))
   } catch {
     return []
@@ -29,7 +30,8 @@ export const useTasks = () => {
   const addTask = (
     title: string,
     description: string,
-    priority: Priority
+    priority: Priority,
+    dueDate?: Date,
   ): void => {
     const newTask: Task = {
       id: crypto.randomUUID(),
@@ -38,6 +40,7 @@ export const useTasks = () => {
       priority,
       status: "pending",
       createdAt: new Date(),
+      dueDate,
     }
     setTasks((prev) => [newTask, ...prev])
   }

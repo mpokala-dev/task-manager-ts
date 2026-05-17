@@ -11,21 +11,21 @@ interface Props {
 
 export const FilterBar = ({ filters, totalCount, completedCount, onFilterChange }: Props) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4 shadow-sm">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4 shadow-sm">
 
       {/* Stats row */}
       <div className="flex gap-4 mb-4">
         <div className="text-center">
           <p className="text-2xl font-bold text-blue-600">{totalCount}</p>
-          <p className="text-xs text-gray-500">Total</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Total</p>
         </div>
         <div className="text-center">
           <p className="text-2xl font-bold text-green-500">{completedCount}</p>
-          <p className="text-xs text-gray-500">Done</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Done</p>
         </div>
         <div className="text-center">
           <p className="text-2xl font-bold text-yellow-500">{totalCount - completedCount}</p>
-          <p className="text-xs text-gray-500">Pending</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Pending</p>
         </div>
       </div>
 
@@ -36,7 +36,7 @@ export const FilterBar = ({ filters, totalCount, completedCount, onFilterChange 
           onChange={(e) =>
             onFilterChange({ ...filters, status: e.target.value as Status | "all" })
           }
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
@@ -48,7 +48,7 @@ export const FilterBar = ({ filters, totalCount, completedCount, onFilterChange 
           onChange={(e) =>
             onFilterChange({ ...filters, priority: e.target.value as Priority | "all" })
           }
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Priorities</option>
           {Object.values(Priority).map((p) => (

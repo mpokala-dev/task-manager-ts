@@ -1,15 +1,19 @@
 import { useTasks } from "./hooks/useTasks"
+import { useDarkMode } from "./hooks/useDarkMode"
 import { AddTaskForm } from "./components/AddTaskForm"
 import { TaskCard } from "./components/TaskCard"
 import { FilterBar } from "./components/FilterBar"
+import { Header } from "./components/Header"
 
 function App() {
+  const { isDark, toggleDarkMode } = useDarkMode()
   const {
     tasks,
     filteredTasks,
     filters,
     setFilters,
     addTask,
+    updateTask,
     deleteTask,
     toggleStatus,
   } = useTasks()
@@ -17,14 +21,10 @@ function App() {
   const completedCount = tasks.filter((t) => t.status === "completed").length
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-lg mx-auto px-4 py-8">
 
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Task Manager</h1>
-          <p className="text-sm text-gray-500 mt-1">Built with React + TypeScript</p>
-        </div>
+        <Header isDark={isDark} onToggle={toggleDarkMode} />
 
         <AddTaskForm onAdd={addTask} />
 
@@ -35,7 +35,6 @@ function App() {
           onFilterChange={setFilters}
         />
 
-        {/* Task list */}
         <div className="flex flex-col gap-3">
           {filteredTasks.length === 0 ? (
             <div className="text-center py-12 text-gray-400">
@@ -49,6 +48,7 @@ function App() {
                 task={task}
                 onToggle={toggleStatus}
                 onDelete={deleteTask}
+                onUpdate={updateTask}
               />
             ))
           )}
