@@ -7,6 +7,7 @@ interface Props {
   onToggle: (id: string) => void
   onDelete: (id: string) => void
   onUpdate: (id: string, updates: TaskUpdate) => void
+  onToast: (message: string, type: "success" | "delete" | "update") => void
 }
 
 const priorityStyles: Record<Priority, string> = {
@@ -21,7 +22,7 @@ const isOverdue = (date: Date): boolean => {
   return date < today
 }
 
-export const TaskCard = ({ task, onToggle, onDelete, onUpdate }: Props) => {
+export const TaskCard = ({ task, onToggle, onDelete, onUpdate, onToast }: Props) => {
   const completed = task.status === "completed"
   const overdue = task.dueDate && !completed && isOverdue(task.dueDate)
 
@@ -42,6 +43,7 @@ export const TaskCard = ({ task, onToggle, onDelete, onUpdate }: Props) => {
       priority: editPriority,
       dueDate: editDueDate ? new Date(editDueDate) : undefined,
     })
+    onToast("Task updated successfully", "update")
     setIsEditing(false)
   }
 
@@ -124,7 +126,13 @@ export const TaskCard = ({ task, onToggle, onDelete, onUpdate }: Props) => {
 
           {/* Checkbox */}
           <button
-            onClick={() => onToggle(task.id)}
+            onClick={() => {
+              onToggle(task.id);
+              onToast(
+                task.status === "pending" ? "Task completed! 🎉" : "Task reopened",
+                "success"
+              )
+            }}
             className={`mt-0.5 w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${
               completed
                 ? "bg-green-500 border-green-500 text-white"
@@ -182,7 +190,10 @@ export const TaskCard = ({ task, onToggle, onDelete, onUpdate }: Props) => {
 
           {/* Delete button */}
           <button
-            onClick={() => onDelete(task.id)}
+            onClick={() => {
+              onDelete(task.id);
+              onToast("Task deleted", "delete");
+            }}
             className="text-gray-300 hover:text-red-400 transition-colors p-1"
             title="Delete task"
           >

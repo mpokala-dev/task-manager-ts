@@ -1,12 +1,19 @@
 import { useTasks } from "./hooks/useTasks"
 import { useDarkMode } from "./hooks/useDarkMode"
+import { useToast } from "./hooks/useToast"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { AddTaskForm } from "./components/AddTaskForm"
 import { TaskCard } from "./components/TaskCard"
 import { FilterBar } from "./components/FilterBar"
 import { Header } from "./components/Header"
+import { ProgressBar } from "./components/ProgressBar"
+import { EmptyState } from "./components/EmptyState"
+import { Toast } from "./components/Toast"
 
 function App() {
   const { isDark, toggleDarkMode } = useDarkMode()
+  const { toasts, addToast, removeToast } = useToast()
+  const [listRef] = useAutoAnimate()
   const {
     tasks,
     filteredTasks,
@@ -19,14 +26,28 @@ function App() {
   } = useTasks()
 
   const completedCount = tasks.filter((t) => t.status === "completed").length
+  const isFiltered = filters.status !== "all" || filters.priority !== "all"
+
+  const handleAdd = (
+    title: string,
+    description: string,
+    priority: Parameters<typeof addTask>[2],
+    dueDate?: Date
+  ) => {
+    addTask(title, description, priority, dueDate)
+    addToast("Task added!", "success")
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-lg mx-auto px-4 py-8">
 
         <Header isDark={isDark} onToggle={toggleDarkMode} />
+        <AddTaskForm onAdd={handleAdd} />
 
-        <AddTaskForm onAdd={addTask} />
+        {tasks.length > 0 && (
+          <ProgressBar total={tasks.length} completed={completedCount} />
+        )}
 
         <FilterBar
           filters={filters}
@@ -35,12 +56,9 @@ function App() {
           onFilterChange={setFilters}
         />
 
-        <div className="flex flex-col gap-3">
+        <div ref={listRef} className="flex flex-col gap-3">
           {filteredTasks.length === 0 ? (
-            <div className="text-center py-12 text-gray-400">
-              <p className="text-lg">No tasks found</p>
-              <p className="text-sm mt-1">Add one above to get started</p>
-            </div>
+            <EmptyState isFiltered={isFiltered} />
           ) : (
             filteredTasks.map((task) => (
               <TaskCard
@@ -49,12 +67,14 @@ function App() {
                 onToggle={toggleStatus}
                 onDelete={deleteTask}
                 onUpdate={updateTask}
+                onToast={addToast}
               />
             ))
           )}
         </div>
 
       </div>
+      <Toast toasts={toasts} onRemove={removeToast} />
     </div>
   )
 }

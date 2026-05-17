@@ -71,10 +71,12 @@ export const AddTaskForm = ({ onAdd }: Props) => {
 
       <div className="flex gap-3 mb-4">
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="priority" 
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Priority
           </label>
           <select
+            id="priority"
             value={priority}
             onChange={(e) => setPriority(e.target.value as Priority)}
             className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -86,10 +88,12 @@ export const AddTaskForm = ({ onAdd }: Props) => {
         </div>
 
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="due-date" 
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Due Date
           </label>
           <input
+            id="due-date"
             type="date"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
