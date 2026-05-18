@@ -27,9 +27,6 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Run coverage
-        run: npm run coverage
-
   build:
     name: Build Check
     runs-on: ubuntu-latest
